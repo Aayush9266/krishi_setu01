@@ -1,27 +1,30 @@
 import 'dart:developer';
 import 'package:firebase_core/firebase_core.dart';
-import 'dart:developer';
-
-import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:krishi_setu01/login.dart';
+import 'package:flutter/material.dart';
 
-import 'package:permission_handler/permission_handler.dart';
-import 'package:provider/provider.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart'; // For persistent login
+// For persistent login
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  if (kIsWeb) {
+    await Firebase.initializeApp(
+        options: FirebaseOptions(
+            apiKey: "AIzaSyDwQBA5II5zVGxJ2_zinSDxATWKcFWx0vM",
+            appId: "1:117932881047:web:f939072bec539268d7a5d2",
+            messagingSenderId: "117932881047",
+            projectId: "fir-53015"));
+  } else {
   try {
     await Firebase.initializeApp();
     log('Firebase connected successfully');
   } catch (e) {
     log('Firebase initialization failed: $e');
-  }
-  runApp(const MyApp());
+  }}
+  runApp(LoginApp());
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
