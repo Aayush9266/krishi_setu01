@@ -24,29 +24,61 @@ class _SignupScreenState extends State<SignupScreen> {
   Future<void> _signup() async {
     if (_formKey.currentState!.validate()) {
       try {
-        // Create User in Firebase Auth
-        UserCredential userCredential =
-            await _auth.createUserWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim(),
-        );
+        String email = _emailController.text.trim();
+        String role = _role; // Role selected from dropdown
 
-        // Store User Details in Firestore
-        await _firestore.collection('users').doc(userCredential.user!.uid).set({
-          'role': _role,
-          'name': _nameController.text.trim(),
-          'phone': _phoneController.text.trim(),
-          'email': _emailController.text.trim(),
-          'address': _addressController.text.trim(),
-          'uid': userCredential.user!.uid,
-        });
+        // Check if the email already exists in Firestore
+        QuerySnapshot querySnapshot = await _firestore
+            .collection('users')
+            .where('email', isEqualTo: email)
+            .get();
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Signup Successful!")),
-        );
+        if (querySnapshot.docs.isNotEmpty) {
+          // Email exists, get the first matching document
+          DocumentSnapshot userDoc = querySnapshot.docs.first;
+          List<dynamic> roles = userDoc['role']; // Existing roles
 
-        // Navigate or Clear Fields
-        Navigator.pop(context);
+          if (roles.contains(role)) {
+            // Role already exists for this user
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("User already registered with this role.")),
+            );
+          } else {
+            // Add new role to the existing array
+            await _firestore.collection('users').doc(userDoc.id).update({
+              'role': FieldValue.arrayUnion([role]) // Append new role
+            });
+
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("New role added successfully!")),
+            );
+
+            Navigator.pop(context); // Navigate back to login
+          }
+        } else {
+          // Email is unique → Proceed with Firebase Authentication
+          UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
+            email: email,
+            password: _passwordController.text.trim(),
+          );
+
+          // Store new user details in Firestore
+          await _firestore.collection('users').doc(userCredential.user!.uid).set({
+            'role': [role], // Store role as an array
+            'name': _nameController.text.trim(),
+            'phone': _phoneController.text.trim(),
+            'email': email,
+            'address': _addressController.text.trim(),
+            'uid': userCredential.user!.uid,
+          });
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Signup Successful!")),
+          );
+
+          Navigator.pop(context); // Navigate back to login
+        }
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Error: ${e.toString()}")),
