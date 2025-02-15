@@ -11,17 +11,18 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 class FarmerHomePage extends StatelessWidget {
   FarmerHomePage({required this.userdata});
   final Map<String,dynamic> userdata;
-  final List<Map<String, dynamic>> options = [
-    {'title': 'Add Product', 'icon': LucideIcons.circlePlus , 'widget' : Addproduct()},
-    {'title': 'Analytics', 'icon': LucideIcons.chartBar , 'widget' : Analytics()},
-    {'title': 'APMC Market', 'icon': LucideIcons.store,'widget' : APMC()},
-    {'title': 'Weather Report', 'icon': LucideIcons.cloudRain,'widget' : Weather()},
-    {'title': 'Inventory', 'icon': LucideIcons.box,'widget' : Inventory()},
-    {'title': 'Queries', 'icon': LucideIcons.messageCircle,'widget' : Queries()},
-  ];
+
 
   @override
   Widget build(BuildContext context) {
+    List<Map<String, dynamic>> options = [
+      {'title': 'Add Product', 'icon': LucideIcons.circlePlus , 'widget' : AddProduct(userdata: userdata,)},
+      {'title': 'Analytics', 'icon': LucideIcons.chartBar , 'widget' : Analytics()},
+      {'title': 'APMC Market', 'icon': LucideIcons.store,'widget' : APMC()},
+      {'title': 'Weather Report', 'icon': LucideIcons.cloudRain,'widget' : Weather()},
+      {'title': 'Inventory', 'icon': LucideIcons.box,'widget' : Inventory()},
+      {'title': 'Queries', 'icon': LucideIcons.messageCircle,'widget' : Queries()},
+    ];
     return Scaffold(
       backgroundColor: Colors.green[50],
       appBar: AppBar(
