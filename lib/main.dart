@@ -11,7 +11,21 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  if (kIsWeb) {
+    await Firebase.initializeApp(
+      options: const FirebaseOptions(
+        apiKey: "AIzaSyDwQBA5II5zVGxJ2_zinSDxATWKcFWx0vM",
+        authDomain: "fir-53015.firebaseapp.com",
+        projectId: "fir-53015",
+        storageBucket: "fir-53015.appspot.com",
+        messagingSenderId: "117932881047",
+        appId: "1:117932881047:web:f939072bec539268d7a5d2",
+      ),
+    );
+  } else {
+    await Firebase.initializeApp();
+  }
+
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool? isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
   String? firebaseUid = prefs.getString('firebaseUid');

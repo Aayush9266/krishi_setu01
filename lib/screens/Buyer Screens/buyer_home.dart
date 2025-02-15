@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:krishi_setu01/Screens/login.dart';
+import 'package:krishi_setu01/Screens/Buyer Screens/product_listing.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // Import Login Page to redirect after logout
 
 class BuyerHomeScreen extends StatelessWidget {
@@ -41,6 +42,34 @@ class BuyerHomeScreen extends StatelessWidget {
           children: [
             const Icon(Icons.home, size: 100, color: Colors.green),
             const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                // Replace with actual user data object
+                Map<String, dynamic> userData = {
+                  "uid": "123456",
+                  "name": "John Doe",
+                  "email": "johndoe@example.com",
+                  "role": "Buyer",  // or "Farmer"
+                };
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProductListingScreen(userData: userdata),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green, // Green Theme
+                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+              child: const Text(
+                "Go to Product Listings",
+                style: TextStyle(fontSize: 16, color: Colors.white),
+              ),
+            ),
+
             Text(
               "Welcome to Krishi Setu!",
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.green[800]),
