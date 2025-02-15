@@ -1,58 +1,48 @@
 import 'dart:developer';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:krishi_setu01/Screens/login.dart';
 import 'package:flutter/material.dart';
+import 'package:krishi_setu01/screens/intermediatePage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // For persistent login
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (kIsWeb) {
-    await Firebase.initializeApp(
-        options: FirebaseOptions(
-            apiKey: "AIzaSyDwQBA5II5zVGxJ2_zinSDxATWKcFWx0vM",
-            appId: "1:117932881047:web:f939072bec539268d7a5d2",
-            messagingSenderId: "117932881047",
-            projectId: "fir-53015"));
-  } else {
-  try {
-    await Firebase.initializeApp();
-    log('Firebase connected successfully');
-  } catch (e) {
-    log('Firebase initialization failed: $e');
-  }}
-  runApp(LoginApp());
+  await Firebase.initializeApp();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool? isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+  String? firebaseUid = prefs.getString('firebaseUid');
+  Map<String, dynamic>? userdata;
+
+  if (isLoggedIn && firebaseUid != null) {
+    // Fetch the user data using firebaseUid
+
+    DocumentSnapshot userDoc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(firebaseUid)
+        .get();
+
+
+    userdata = userDoc.data() as Map<String, dynamic>;
+  }
+  runApp(MyApp(userdata: userdata??{} ,isLogged: isLoggedIn,));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  Map<String,dynamic> userdata;
+  bool isLogged;
+  MyApp({required this.userdata , required this.isLogged ,super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+
+      home: Intermediatepage(userdata: userdata ?? {} , isLogged: isLogged),
     );
   }
 }

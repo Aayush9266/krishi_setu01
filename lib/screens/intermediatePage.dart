@@ -18,7 +18,7 @@ class _IntermediatepageState extends State<Intermediatepage> {
     if(widget.isLogged){
       return intermediate(widget.userdata, context);
     }else{
-      return HomeScreen();
+      return LoginScreen();
     }
 
   }

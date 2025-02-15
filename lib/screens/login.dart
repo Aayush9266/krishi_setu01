@@ -5,6 +5,7 @@ import 'package:krishi_setu01/Screens/signup.dart';
 import 'package:krishi_setu01/Screens/buyer_home.dart';
 import 'package:krishi_setu01/Screens/farmer_home.dart';
 import 'package:krishi_setu01/Screens/role_selection.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class LoginApp extends StatelessWidget {
@@ -36,6 +37,11 @@ class _LoginScreenState extends State<LoginScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  Future<void> _saveLoginState(String uid) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', true);
+    await prefs.setString('firebaseUid', uid);
+  }
   Future<void> _login() async {
     String email = emailController.text.trim();
     String password = passwordController.text.trim();
@@ -53,39 +59,17 @@ class _LoginScreenState extends State<LoginScreen> {
       User? user = userCredential.user;
 
       if (user != null) {
+        String uid = userCredential.user!.uid;
+        await _saveLoginState(uid);
         // Step 2: Fetch user details from Firestore
         DocumentSnapshot userDoc = await _firestore.collection('users').doc(user.uid).get();
         Map<String,dynamic> userdata = userDoc.data() as Map<String, dynamic>;
 
         if (userDoc.exists) {
-          List<dynamic> roles = userdata['roles']; // Get role field (array)
-
-          if (roles.length > 1) {
-            // Step 3A: Navigate to Role Selection Page
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => RoleSelectionScreen(userdata: userdata,)),
-            );
-          } else if (roles.length == 1) {
-            // Step 3B: Navigate to specific page based on role
-            String userRole = roles.first;
-
-            if (userRole == "Farmer") {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) =>  FarmerHomeScreen(userdata: userdata,)),
-              );
-            } else if (userRole == "Buyer") {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => BuyerHomeScreen(userdata: userdata,)),
-              );
-            } else {
-              throw Exception("Invalid role assigned.");
-            }
-          } else {
-            throw Exception("No role assigned. Please contact support.");
-          }
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => intermediate(userdata, context)),
+          );
         } else {
           throw Exception("User document not found.");
         }
@@ -189,7 +173,36 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
+Widget intermediate(Map<String,dynamic> userdata , BuildContext context){
+  List<dynamic> roles = userdata['roles']; // Get role field (array)
 
-void intermediate(){
+  if (roles.length > 1) {
+    // Step 3A: Navigate to Role Selection Page
+    return RoleSelectionScreen(userdata: userdata,);
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => RoleSelectionScreen(userdata: userdata,)),
+    );
+  } else if (roles.length == 1) {
+    // Step 3B: Navigate to specific page based on role
+    String userRole = roles.first;
 
+    if (userRole == "Farmer") {
+      return FarmerHomeScreen(userdata: userdata,);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) =>  FarmerHomeScreen(userdata: userdata,)),
+      );
+    } else if (userRole == "Buyer") {
+      return BuyerHomeScreen(userdata: userdata,);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => BuyerHomeScreen(userdata: userdata,)),
+      );
+    } else {
+      throw Exception("Invalid role assigned.");
+    }
+  } else {
+    throw Exception("No role assigned. Please contact support.");
+  }
 }
