@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:krishi_setu01/buyer_home.dart';
-import 'package:krishi_setu01/farmer_home.dart';
+import 'package:krishi_setu01/Screens/buyer_home.dart';
+import 'package:krishi_setu01/Screens/farmer_home.dart';
 
 class RoleSelectionScreen extends StatelessWidget {
-  const RoleSelectionScreen({super.key});
+  Map<String,dynamic> userdata;
+  RoleSelectionScreen({required this.userdata ,super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +31,10 @@ class RoleSelectionScreen extends StatelessWidget {
             // Farmer Card
             GestureDetector(
               onTap: () {
+                userdata['roles'] = ["Farmer"];
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const FarmerHomeScreen()),
+                  MaterialPageRoute(builder: (context) => FarmerHomeScreen(userdata: userdata,)),
                 );
               },
               child: _buildRoleCard(
@@ -46,9 +48,10 @@ class RoleSelectionScreen extends StatelessWidget {
             // Buyer Card
             GestureDetector(
               onTap: () {
+                userdata['roles'] = ["Buyer"];
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const BuyerHomeScreen()),
+                  MaterialPageRoute(builder: (context) => BuyerHomeScreen(userdata: userdata,)),
                 );
               },
               child: _buildRoleCard(
