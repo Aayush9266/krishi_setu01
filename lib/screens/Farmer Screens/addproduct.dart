@@ -32,23 +32,6 @@ class _AddProductState extends State<AddProduct> {
 
   final ImagePicker picker = ImagePicker();
 
-  // Future<void> _pickImage() async {
-  //   final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-  //
-  //   if (pickedFile != null) {
-  //
-  //       setState(() {
-  //         _imageFile = File(pickedFile.path);
-  //       });
-  //
-  //     // Convert image to base64 string
-  //     final bytes = await File(pickedFile.path).readAsBytes();
-  //     String base64String = base64Encode(bytes);
-  //     image = base64String;
-  //
-  //     // Update the profile image in MongoDB
-  //   }
-  // }
 
   Future<void> _pickImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -84,16 +67,7 @@ class _AddProductState extends State<AddProduct> {
 
       String owner = widget.userdata['name'];
 
-     // String imageUrl = await _uploadImageToFirebase(_imageFile!);
 
-     // Product newProduct = Product(
-      //   _nameController.text.trim(),
-      //   int.parse(_priceController.text.trim()),
-      //   _infoController.text.trim(),
-      //   owner,
-      //   image ?? "",
-      //   int.parse(_quantityController.text.trim()),
-      // );
       Map<String, dynamic> productData = {
         "productName": _nameController.text.trim(),
         "productInfo": _infoController.text.trim(),
