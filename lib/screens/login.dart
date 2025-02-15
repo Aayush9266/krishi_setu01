@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:krishi_setu01/Screens/signup.dart';
-import 'package:krishi_setu01/Screens/buyer_home.dart';
-import 'package:krishi_setu01/Screens/farmer_home.dart';
+import 'package:krishi_setu01/screens/Buyer Screens/buyer_home.dart';
+import 'package:krishi_setu01/screens/Farmer Screens/farmerhomepage.dart';
 import 'package:krishi_setu01/Screens/role_selection.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -188,10 +188,10 @@ Widget intermediate(Map<String,dynamic> userdata , BuildContext context){
     String userRole = roles.first;
 
     if (userRole == "Farmer") {
-      return FarmerHomeScreen(userdata: userdata,);
+      return FarmerHomePage(userdata: userdata,);
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) =>  FarmerHomeScreen(userdata: userdata,)),
+        MaterialPageRoute(builder: (context) =>  FarmerHomePage(userdata: userdata,)),
       );
     } else if (userRole == "Buyer") {
       return BuyerHomeScreen(userdata: userdata,);

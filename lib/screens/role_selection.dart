@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:krishi_setu01/Screens/buyer_home.dart';
-import 'package:krishi_setu01/Screens/farmer_home.dart';
+import 'package:krishi_setu01/Screens/Buyer Screens/buyer_home.dart';
+import 'package:krishi_setu01/Screens/Farmer Screens/farmerhomepage.dart';
 
 class RoleSelectionScreen extends StatelessWidget {
   Map<String,dynamic> userdata;
@@ -34,7 +34,7 @@ class RoleSelectionScreen extends StatelessWidget {
                 userdata['roles'] = ["Farmer"];
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => FarmerHomeScreen(userdata: userdata,)),
+                  MaterialPageRoute(builder: (context) => FarmerHomePage(userdata: userdata,)),
                 );
               },
               child: _buildRoleCard(
