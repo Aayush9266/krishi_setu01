@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:krishi_setu01/login.dart'; // Import Login Page to redirect after logout
+import 'package:krishi_setu01/Screens/login.dart'; // Import Login Page to redirect after logout
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

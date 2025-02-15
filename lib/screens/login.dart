@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:krishi_setu01/signup.dart';
-import 'package:krishi_setu01/buyer_home.dart';
-import 'package:krishi_setu01/farmer_home.dart';
-import 'package:krishi_setu01/role_selection.dart';
+import 'package:krishi_setu01/Screens/signup.dart';
+import 'package:krishi_setu01/Screens/buyer_home.dart';
+import 'package:krishi_setu01/Screens/farmer_home.dart';
+import 'package:krishi_setu01/Screens/role_selection.dart';
 
 
 class LoginApp extends StatelessWidget {
@@ -55,15 +55,16 @@ class _LoginScreenState extends State<LoginScreen> {
       if (user != null) {
         // Step 2: Fetch user details from Firestore
         DocumentSnapshot userDoc = await _firestore.collection('users').doc(user.uid).get();
+        Map<String,dynamic> userdata = userDoc.data() as Map<String, dynamic>;
 
         if (userDoc.exists) {
-          List<dynamic> roles = userDoc['roles']; // Get role field (array)
+          List<dynamic> roles = userdata['roles']; // Get role field (array)
 
           if (roles.length > 1) {
             // Step 3A: Navigate to Role Selection Page
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => const RoleSelectionScreen()),
+              MaterialPageRoute(builder: (context) => RoleSelectionScreen(userdata: userdata,)),
             );
           } else if (roles.length == 1) {
             // Step 3B: Navigate to specific page based on role
@@ -72,12 +73,12 @@ class _LoginScreenState extends State<LoginScreen> {
             if (userRole == "Farmer") {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => const FarmerHomeScreen()),
+                MaterialPageRoute(builder: (context) =>  FarmerHomeScreen(userdata: userdata,)),
               );
             } else if (userRole == "Buyer") {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => const BuyerHomeScreen()),
+                MaterialPageRoute(builder: (context) => BuyerHomeScreen(userdata: userdata,)),
               );
             } else {
               throw Exception("Invalid role assigned.");
@@ -187,4 +188,8 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+}
+
+void intermediate(){
+
 }
