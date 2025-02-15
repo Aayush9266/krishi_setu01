@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:krishi_setu01/Screens/login.dart'; // Import Login Page to redirect after logout
+import 'package:krishi_setu01/Screens/login.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // Import Login Page to redirect after logout
 
 class BuyerHomeScreen extends StatelessWidget {
   final Map<String,dynamic> userdata;
@@ -10,7 +11,16 @@ class BuyerHomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // Get current user
     final User? user = FirebaseAuth.instance.currentUser;
+    Future<void> logoutUser(BuildContext context) async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.remove('isLoggedIn');
 
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => LoginScreen()),
+            (Route<dynamic> route) => false,
+      );
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text("Buyer Home"),
@@ -20,10 +30,7 @@ class BuyerHomeScreen extends StatelessWidget {
             icon: const Icon(Icons.logout),
             onPressed: () async {
               await FirebaseAuth.instance.signOut();
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const LoginApp()),
-              );
+              logoutUser(context);
             },
           ),
         ],
@@ -49,10 +56,7 @@ class BuyerHomeScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () async {
                 await FirebaseAuth.instance.signOut();
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const LoginApp()),
-                );
+                logoutUser(context);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green,

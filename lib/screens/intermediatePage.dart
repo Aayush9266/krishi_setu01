@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:krishi_setu01/Screens/login.dart';
-import 'package:krishi_setu01/screens/home.dart';
+
 
 class Intermediatepage extends StatefulWidget {
   Map<String,dynamic> userdata;
@@ -18,7 +18,7 @@ class _IntermediatepageState extends State<Intermediatepage> {
     if(widget.isLogged){
       return intermediate(widget.userdata, context);
     }else{
-      return HomeScreen();
+      return LoginScreen();
     }
 
   }
