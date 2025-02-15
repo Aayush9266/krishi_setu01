@@ -12,7 +12,7 @@ class FarmerHomeScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Home"),
+        title: const Text("Farmer Home"),
         backgroundColor: Colors.green[700],
         actions: [
           IconButton(

@@ -12,7 +12,7 @@ class BuyerHomeScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Home"),
+        title: const Text("Buyer Home"),
         backgroundColor: Colors.green[700],
         actions: [
           IconButton(
