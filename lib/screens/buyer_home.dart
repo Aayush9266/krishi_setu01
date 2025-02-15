@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:krishi_setu01/login.dart'; // Import Login Page to redirect after logout
+import 'package:krishi_setu01/Screens/login.dart'; // Import Login Page to redirect after logout
 
-class FarmerHomeScreen extends StatelessWidget {
-  const FarmerHomeScreen({super.key});
+class BuyerHomeScreen extends StatelessWidget {
+  final Map<String,dynamic> userdata;
+  const BuyerHomeScreen({required this.userdata ,super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +13,7 @@ class FarmerHomeScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Farmer Home"),
+        title: const Text("Buyer Home"),
         backgroundColor: Colors.green[700],
         actions: [
           IconButton(
@@ -42,6 +43,8 @@ class FarmerHomeScreen extends StatelessWidget {
               user != null ? "Logged in as: ${user.email}" : "No user logged in",
               style: TextStyle(fontSize: 16, color: Colors.green[600]),
             ),
+            Text(userdata['roles'].toString()),
+         //   Text(userdata['roles'].length),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
