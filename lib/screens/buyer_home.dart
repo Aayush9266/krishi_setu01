@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:krishi_setu01/Screens/login.dart';
-import 'package:krishi_setu01/screens/home.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // Import Login Page to redirect after logout
 
 class BuyerHomeScreen extends StatelessWidget {
