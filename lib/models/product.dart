@@ -13,5 +13,13 @@ class Product {
   String get getOwner => this.owner;
   String get getImage => this.base64image;
   int get getQuantity => this.quantity;
-
+  Map<String, dynamic> toMap() {
+    return {
+      "productName": productName,
+      "productInfo": productInfo,
+      "price": price,
+      "owner": owner,
+      "base64image": base64image,
+      "quantity": quantity,
+    };}
 }
