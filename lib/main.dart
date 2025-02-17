@@ -42,6 +42,7 @@ void main() async {
 
     userdata = userDoc.data() as Map<String, dynamic>;
   }
+
   runApp(MyApp(userdata: userdata??{} ,isLogged: isLoggedIn,));
 }
 
@@ -54,6 +55,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
+
       title: 'Flutter Demo',
 
       home: Intermediatepage(userdata: userdata ?? {} , isLogged: isLogged),
