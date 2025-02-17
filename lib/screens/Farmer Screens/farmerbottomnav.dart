@@ -29,7 +29,7 @@ class FBottomBar extends StatelessWidget {
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => FarmerHomePage(userdata: userdata)),
+                          builder: (context) => FHome(userdata: userdata)),
                           (Route<dynamic> route) => false,
                     );
                   },

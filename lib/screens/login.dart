@@ -188,11 +188,11 @@ Widget intermediate(Map<String,dynamic> userdata , BuildContext context){
     String userRole = roles.first;
 
     if (userRole == "Farmer") {
-      return FarmerHomePage(userdata: userdata,);
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) =>  FarmerHomePage(userdata: userdata,)),
-      );
+      return FHome(userdata: userdata,);
+      // Navigator.pushReplacement(
+      //   context,
+      //  // MaterialPageRoute(builder: (context) =>  FarmerHomePage(userdata: userdata,)),
+      // );
     } else if (userRole == "Buyer") {
       return BuyerHomeScreen(userdata: userdata,);
       Navigator.pushReplacement(
