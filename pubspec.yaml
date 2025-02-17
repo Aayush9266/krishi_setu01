@@ -87,7 +87,7 @@ dependencies:
   # For showing network images
   cached_network_image: ^3.4.1
   flutter_dotenv: ^5.2.1
-  mapbox_maps_flutter: ^2.5.2
+#  mapbox_maps_flutter: ^2.5.2
   # For picking images
 
   # For accessing Firebase Storage (for uploading files)
