@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:krishi_setu01/screens/profile_page.dart';
 
 class ProductListingScreen extends StatefulWidget {
-  final Map<String, dynamic> userData;
+  final Map<String, dynamic> userdata;
 
-  const ProductListingScreen({Key? key, required this.userData}) : super(key: key);
+  const ProductListingScreen({Key? key, required this.userdata}) : super(key: key);
 
   @override
   _ProductListingScreenState createState() => _ProductListingScreenState();
@@ -85,7 +86,7 @@ class _ProductListingScreenState extends State<ProductListingScreen> {
           IconButton(
             icon: const Icon(Icons.account_circle, color: Colors.white),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage(userData: widget.userdata,)));
             },
           )
         ],
@@ -195,16 +196,7 @@ class _ProductListingScreenState extends State<ProductListingScreen> {
   }
 }
 
-// Dummy Profile Screen
-class ProfileScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Profile")),
-      body: const Center(child: Text("User Profile Page")),
-    );
-  }
-}
+
 
 // Product Detail Page
 class ProductDetailScreen extends StatelessWidget {
