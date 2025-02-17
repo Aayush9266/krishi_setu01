@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:krishi_setu01/screens/Farmer%20Screens/farmerbottomnav.dart';
+
+import '../utils.dart';
 
 class ProfilePage extends StatefulWidget {
   final Map<String, dynamic> userData;
@@ -99,6 +102,15 @@ class _ProfilePageState extends State<ProfilePage> {
         title: Text("My Profile"),
         centerTitle: true,
         backgroundColor: Colors.green[700],
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+              utils().logoutUser(context);
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
@@ -172,6 +184,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ],
         ),
       ),
+      bottomNavigationBar: (widget.userData['role'][0] == "Farmer") ? FBottomBar(userdata: widget.userData ) : FBottomBar(userdata: widget.userData ),
     );
   }
 

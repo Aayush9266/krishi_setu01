@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:krishi_setu01/Screens/Farmer%20Screens/farmerhomepage.dart';
 import 'package:krishi_setu01/screens/Farmer%20Screens/Queries.dart';
 import 'package:krishi_setu01/screens/Farmer%20Screens/analytics.dart';
+import 'package:krishi_setu01/screens/profile_page.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class FBottomBar extends StatelessWidget {
@@ -80,9 +81,15 @@ class FBottomBar extends StatelessWidget {
             Column(mainAxisSize: MainAxisSize.min, children: [
               Expanded(
                 child: IconButton(
-                  icon: Icon(Icons.settings_outlined, color: Colors.white), // White icon
+                  icon: Icon(Icons.person, color: Colors.white), // White icon
                   padding: EdgeInsets.zero,
                   onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ProfilePage(userData: userdata)),
+                          (Route<dynamic> route) => false,
+                    );
                     // Profile action goes here
                   },
                 ),
