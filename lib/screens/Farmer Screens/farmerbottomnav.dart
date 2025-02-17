@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:krishi_setu01/Screens/Farmer%20Screens/farmerhomepage.dart';
+import 'package:krishi_setu01/screens/Farmer%20Screens/Inventory.dart';
 import 'package:krishi_setu01/screens/Farmer%20Screens/Queries.dart';
 import 'package:krishi_setu01/screens/Farmer%20Screens/analytics.dart';
 import 'package:krishi_setu01/screens/profile_page.dart';
@@ -38,25 +39,41 @@ class FBottomBar extends StatelessWidget {
               ),
               Expanded(child: Text("Home", style: TextStyle(color: Colors.white))) // White text
             ]),
-
-            // Queries Icon - Green Theme
             Column(mainAxisSize: MainAxisSize.min, children: [
               Expanded(
                 child: IconButton(
-                  icon: Icon(LucideIcons.messageCircle, color: Colors.white), // White icon
+                  icon: Icon(Icons.inventory, color: Colors.white), // White icon
                   padding: EdgeInsets.zero,
                   onPressed: () {
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Queries(userdata: userdata)),
+                          builder: (context) => Inventory(userdata: userdata)),
                           (Route<dynamic> route) => false,
                     );
                   },
                 ),
               ),
-              Expanded(child: Text("Queries", style: TextStyle(color: Colors.white))) // White text
+              Expanded(child: Text("Inventory", style: TextStyle(color: Colors.white))) // White text
             ]),
+            // Queries Icon - Green Theme
+            // Column(mainAxisSize: MainAxisSize.min, children: [
+            //   Expanded(
+            //     child: IconButton(
+            //       icon: Icon(LucideIcons.messageCircle, color: Colors.white), // White icon
+            //       padding: EdgeInsets.zero,
+            //       onPressed: () {
+            //         Navigator.pushAndRemoveUntil(
+            //           context,
+            //           MaterialPageRoute(
+            //               builder: (context) => Queries(userdata: userdata)),
+            //               (Route<dynamic> route) => false,
+            //         );
+            //       },
+            //     ),
+            //   ),
+            //   Expanded(child: Text("Queries", style: TextStyle(color: Colors.white))) // White text
+            // ]),
 
             // Analytics Icon - Green Theme
             Column(mainAxisSize: MainAxisSize.min, children: [

@@ -22,6 +22,7 @@ class RoleSelectionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text("Select Your Role"),
         backgroundColor: Colors.green[800],
         centerTitle: true,

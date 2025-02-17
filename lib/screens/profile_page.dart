@@ -184,7 +184,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ],
         ),
       ),
-      bottomNavigationBar: (widget.userData['role'][0] == "Farmer") ? FBottomBar(userdata: widget.userData ) : FBottomBar(userdata: widget.userData ),
+      bottomNavigationBar: (widget.userData['role'] == "Farmer") ? FBottomBar(userdata: widget.userData ) : FBottomBar(userdata: widget.userData ),
     );
   }
 
