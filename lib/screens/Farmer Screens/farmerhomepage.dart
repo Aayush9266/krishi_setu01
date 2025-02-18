@@ -90,17 +90,12 @@ class FarmerHomePage extends StatelessWidget {
       backgroundColor: Colors.green[50],
       appBar: AppBar(
         title: Text('Farmer Homepage', style: TextStyle(color: Colors.white)),
+        centerTitle: true,
         backgroundColor: Colors.green[700],
         elevation: 0,
         automaticallyImplyLeading: false,
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () async {
-              await FirebaseAuth.instance.signOut();
-              utils().logoutUser(context);
-            },
-          ),
+        actions: [
+          Icon(Icons.notifications ,color: Colors.white,)
         ],
       ),
       body: SingleChildScrollView(

@@ -80,15 +80,10 @@ class _SellerDashboardState extends State<SellerDashboard> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text("Farmer's Dashboard", style: TextStyle(color: Colors.white)),
+        centerTitle: true,
         backgroundColor: Colors.green[700],
         actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () async {
-              await FirebaseAuth.instance.signOut();
-              utils().logoutUser(context);
-            },
-          ),
+          Icon(Icons.notifications ,color: Colors.white,)
         ],
       ),
       body: SingleChildScrollView(

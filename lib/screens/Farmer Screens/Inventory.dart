@@ -71,15 +71,10 @@ class _ProductGridPageState extends State<ProductGridPage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text("Inventory", style: TextStyle(color: Colors.white)),
+        centerTitle: true,
         backgroundColor: Colors.green[700],
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () async {
-              await FirebaseAuth.instance.signOut();
-              utils().logoutUser(context);
-            },
-          ),
+        actions: [
+          Icon(Icons.notifications ,color: Colors.white,)
         ],
       ),
       body: SingleChildScrollView(

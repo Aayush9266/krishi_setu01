@@ -174,6 +174,76 @@ class _ProfilePageState extends State<ProfilePage> {
       }
     }
   }
+  void _showEditProfileDialog() {
+    TextEditingController _nameController =
+    TextEditingController(text: widget.userData['name']);
+    TextEditingController _emailController =
+    TextEditingController(text: widget.userData['email']);
+    TextEditingController _phoneController =
+    TextEditingController(text: widget.userData['phone']);
+    TextEditingController _addressController =
+    TextEditingController(text: widget.userData['address']);
+
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Update Profile Info"),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildTextField("Name", _nameController),
+                _buildTextField("Email", _emailController),
+                _buildTextField("Phone", _phoneController),
+                _buildTextField("Address", _addressController),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("Cancel"),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                String uid = FirebaseAuth.instance.currentUser!.uid;
+
+                Map<String, dynamic> updatedData = {
+                  'name': _nameController.text.trim(),
+                  'email': _emailController.text.trim(),
+                  'phone': _phoneController.text.trim(),
+                  'address': _addressController.text.trim(),
+                };
+
+                try {
+                  await FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(uid)
+                      .update(updatedData);
+
+                  setState(() {
+                    widget.userData.addAll(updatedData);
+                  });
+
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Profile updated successfully!")),
+                  );
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Update failed: ${e.toString()}")),
+                  );
+                }
+              },
+              child: Text("Save"),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   Future<void> _updateProfile() async {
     String uid = FirebaseAuth.instance.currentUser!.uid;
@@ -210,18 +280,9 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("My Profile"),
+        title: Text("My Profile",style: TextStyle(color: Colors.white),),
         centerTitle: true,
         backgroundColor: Colors.green[700],
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () async {
-              await FirebaseAuth.instance.signOut();
-              utils().logoutUser(context);
-            },
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
@@ -269,6 +330,29 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             SizedBox(height: 20),
+           if(widget.userData['roles'][0].toString() == "Buyer") ListTile(
+              title: TextButton(
+                onPressed: ()  {
+                 // await logoutUser(context); // Logout the user
+                },
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Text("My Orders",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16,
+                      )),
+                ),
+              ),
+              leading: Icon(Icons.card_travel, size: 28),
+              contentPadding: EdgeInsets.fromLTRB(
+                  MediaQuery.of(context).size.width * 0.08, 0, 0, 0),
+              shape: Border(
+                top: BorderSide(color: Colors.grey[350]!, width: 0.8),
+               // bottom: BorderSide(color: Colors.grey[350]!, width: 0.8),
+              ),
+            ),
             ListTile(
               title: TextButton(
                   onPressed: () {
@@ -291,38 +375,79 @@ class _ProfilePageState extends State<ProfilePage> {
                 top: BorderSide(color: Colors.grey[350]!, width: 0.8),
               ),
             ),
+            ListTile(
+              title: TextButton(
+                onPressed: _showEditProfileDialog,
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Text("Update Profile Info",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16,
+                      )),
+                ),
+              ),
+              leading: Icon(Icons.edit, size: 28),
+              contentPadding: EdgeInsets.fromLTRB(
+                  MediaQuery.of(context).size.width * 0.08, 0, 0, 0),
+              shape: Border(
+                bottom: BorderSide(color: Colors.grey[350]!, width: 0.8),
+              ),
+            ),ListTile(
+              title: TextButton(
+                onPressed: () async {
+                  await utils().logoutUser(context); // Logout the user
+                },
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Text("Logout",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16,
+                      )),
+                ),
+              ),
+              leading: Icon(Icons.logout, size: 28),
+              contentPadding: EdgeInsets.fromLTRB(
+                  MediaQuery.of(context).size.width * 0.08, 0, 0, 0),
+              shape: Border(
+                bottom: BorderSide(color: Colors.grey[350]!, width: 0.8),
+              ),
+            ),
             SizedBox(height: 20),
             // Update Section
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Update Information",
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.green[800]),
-                ),
-                IconButton(
-                  icon: Icon(_isEditing ? Icons.check : Icons.edit,
-                      color: Colors.green[700]),
-                  onPressed: () {
-                    if (_isEditing) {
-                      _updateProfile();
-                    } else {
-                      setState(() => _isEditing = true);
-                    }
-                  },
-                ),
-              ],
-            ),
-            SizedBox(height: 10),
-
-            // User Details Form
-            _buildTextField("Name", _nameController),
-            _buildTextField("Email", _emailController),
-            _buildTextField("Phone", _phoneController),
-            _buildTextField("Address", _addressController),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Text(
+            //       "Update Information",
+            //       style: TextStyle(
+            //           fontSize: 18,
+            //           fontWeight: FontWeight.w600,
+            //           color: Colors.green[800]),
+            //     ),
+            //     IconButton(
+            //       icon: Icon(_isEditing ? Icons.check : Icons.edit,
+            //           color: Colors.green[700]),
+            //       onPressed: () {
+            //         if (_isEditing) {
+            //           _updateProfile();
+            //         } else {
+            //           setState(() => _isEditing = true);
+            //         }
+            //       },
+            //     ),
+            //   ],
+            // ),
+            // SizedBox(height: 10),
+            //
+            // // User Details Form
+            // _buildTextField("Name", _nameController),
+            // _buildTextField("Email", _emailController),
+            // _buildTextField("Phone", _phoneController),
+            // _buildTextField("Address", _addressController),
           ],
         ),
       ),
@@ -344,7 +469,7 @@ class _ProfilePageState extends State<ProfilePage> {
             borderSide: BorderSide(color: Colors.green, width: 2.0),
           ),
         ),
-        enabled: _isEditing,
+        enabled: true,
       ),
     );
   }

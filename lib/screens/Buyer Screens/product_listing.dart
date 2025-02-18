@@ -84,12 +84,7 @@ class _ProductListingScreenState extends State<ProductListingScreen> {
           ],
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.account_circle, color: Colors.white),
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage(userData: widget.userdata,)));
-            },
-          )
+          Icon(Icons.notifications, color: Colors.white),
         ],
       ),
       drawer: Drawer(), // Empty Drawer
