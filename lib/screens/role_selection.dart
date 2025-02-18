@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:krishi_setu01/Screens/Buyer Screens/buyer_home.dart';
-import 'package:krishi_setu01/Screens/Farmer Screens/farmerhomepage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:krishi_setu01/Screens/login.dart';
+import 'Buyer Screens/product_listing.dart';
+import 'Farmer Screens/farmerhomepage.dart';
+import 'login.dart';
 
 class RoleSelectionScreen extends StatelessWidget {
   Map<String,dynamic> userdata;
@@ -22,6 +22,7 @@ class RoleSelectionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text("Select Your Role"),
         backgroundColor: Colors.green[800],
         centerTitle: true,
@@ -63,7 +64,7 @@ class RoleSelectionScreen extends StatelessWidget {
                 userdata['roles'] = ["Buyer"];
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => BuyerHomeScreen(userdata: userdata,)),
+                  MaterialPageRoute(builder: (context) => ProductListingScreen(userdata: userdata,)),
                 );
               },
               child: _buildRoleCard(

@@ -1,18 +1,17 @@
 import 'dart:async';
+import 'package:KrishiSetu/screens/Farmer%20Screens/weatherReport.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:krishi_setu01/screens/Farmer%20Screens/APMCmarket.dart';
-import 'package:krishi_setu01/screens/Farmer%20Screens/Inventory.dart';
-import 'package:krishi_setu01/screens/Farmer%20Screens/Queries.dart';
-import 'package:krishi_setu01/screens/Farmer%20Screens/addproduct.dart';
-import 'package:krishi_setu01/screens/Farmer%20Screens/analytics.dart';
-import 'package:krishi_setu01/screens/Farmer%20Screens/farmerbottomnav.dart';
-import 'package:krishi_setu01/screens/Farmer%20Screens/weatherReport.dart';
-import 'package:krishi_setu01/utils.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../login.dart';
+import 'APMCmarket.dart';
+import 'Inventory.dart';
+import 'Queries.dart';
+import 'addproduct.dart';
+import 'analytics.dart';
+import 'farmerbottomnav.dart';
 
 class FHome extends StatefulWidget {
   FHome({required this.userdata});
@@ -57,6 +56,7 @@ class _FHomeState extends State<FHome> {
       body: FarmerHomePage(
         userdata: widget.userdata,
         pageController: _pageController,  // Pass the PageController to FarmerHomePage
+        
       ),
     );
   }
@@ -89,17 +89,12 @@ class FarmerHomePage extends StatelessWidget {
       backgroundColor: Colors.green[50],
       appBar: AppBar(
         title: Text('Farmer Homepage', style: TextStyle(color: Colors.white)),
+        centerTitle: true,
         backgroundColor: Colors.green[700],
         elevation: 0,
         automaticallyImplyLeading: false,
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () async {
-              await FirebaseAuth.instance.signOut();
-              utils().logoutUser(context);
-            },
-          ),
+        actions: [
+          Icon(Icons.notifications ,color: Colors.white,)
         ],
       ),
       body: SingleChildScrollView(

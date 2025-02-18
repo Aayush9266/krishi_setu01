@@ -1,10 +1,13 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:krishi_setu01/models/product.dart';
-import 'package:krishi_setu01/screens/Farmer%20Screens/editproduct.dart';
+import '../../models/product.dart';
+
+import 'editproduct.dart';
+import 'farmerbottomnav.dart';
 
 class Inventory extends StatefulWidget {
   Map<String, dynamic> userdata;
@@ -65,8 +68,13 @@ class _ProductGridPageState extends State<ProductGridPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Product Grid", style: TextStyle(color: Colors.white)),
+        automaticallyImplyLeading: false,
+        title: Text("Inventory", style: TextStyle(color: Colors.white)),
+        centerTitle: true,
         backgroundColor: Colors.green[700],
+        actions: [
+          Icon(Icons.notifications ,color: Colors.white,)
+        ],
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
@@ -77,6 +85,7 @@ class _ProductGridPageState extends State<ProductGridPage> {
           ],
         ),
       ),
+      bottomNavigationBar: FBottomBar(userdata: widget.userdata),
     );
   }
 

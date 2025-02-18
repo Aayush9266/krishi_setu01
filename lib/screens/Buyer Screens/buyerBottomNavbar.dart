@@ -1,13 +1,9 @@
+import 'package:KrishiSetu/Screens/Buyer%20Screens/product_listing.dart';
 import 'package:flutter/material.dart';
-
 import '../profile_page.dart';
-import 'Inventory.dart';
-import 'analytics.dart';
-import 'farmerhomepage.dart';
 
-
-class FBottomBar extends StatelessWidget {
-  const FBottomBar({Key? key, required this.userdata}) : super(key: key);
+class BBottomBar extends StatelessWidget {
+  const BBottomBar({Key? key, required this.userdata}) : super(key: key);
   final Map<String, dynamic> userdata;
 
   @override
@@ -25,36 +21,35 @@ class FBottomBar extends StatelessWidget {
             Column(mainAxisSize: MainAxisSize.min, children: [
               Expanded(
                 child: IconButton(
-                  icon: Icon(Icons.home_filled, color: Colors.white), // White icon
+                  icon: Icon(Icons.home_filled,
+                      color: Colors.white), // White icon
                   padding: EdgeInsets.zero,
                   onPressed: () {
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => FHome(userdata: userdata)),
-                          (Route<dynamic> route) => false,
+                          builder: (context) =>
+                              ProductListingScreen(userdata: userdata)),
+                      (Route<dynamic> route) => false,
                     );
                   },
                 ),
               ),
-              Expanded(child: Text("Home", style: TextStyle(color: Colors.white))) // White text
+              Expanded(
+                  child: Text("Home",
+                      style: TextStyle(color: Colors.white))) // White text
             ]),
             Column(mainAxisSize: MainAxisSize.min, children: [
               Expanded(
                 child: IconButton(
-                  icon: Icon(Icons.inventory, color: Colors.white), // White icon
+                  icon: Icon(Icons.chat, color: Colors.white), // White icon
                   padding: EdgeInsets.zero,
-                  onPressed: () {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Inventory(userdata: userdata)),
-                          (Route<dynamic> route) => false,
-                    );
-                  },
+                  onPressed: () {},
                 ),
               ),
-              Expanded(child: Text("Inventory", style: TextStyle(color: Colors.white))) // White text
+              Expanded(
+                  child: Text("Chat",
+                      style: TextStyle(color: Colors.white))) // White text
             ]),
             // Queries Icon - Green Theme
             // Column(mainAxisSize: MainAxisSize.min, children: [
@@ -79,19 +74,22 @@ class FBottomBar extends StatelessWidget {
             Column(mainAxisSize: MainAxisSize.min, children: [
               Expanded(
                 child: IconButton(
-                  icon: Icon(Icons.analytics, color: Colors.white), // White icon
+                  icon: Icon(Icons.shopping_cart,
+                      color: Colors.white), // White icon
                   padding: EdgeInsets.zero,
                   onPressed: () {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Analytics(userdata: userdata)),
-                          (Route<dynamic> route) => false,
-                    );
+                    // Navigator.pushAndRemoveUntil(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //       builder: (context) => Analytics(userdata: userdata)),
+                    //       (Route<dynamic> route) => false,
+                    // );
                   },
                 ),
               ),
-              Expanded(child: Text("Dashboard", style: TextStyle(color: Colors.white))) // White text
+              Expanded(
+                  child: Text("Cart",
+                      style: TextStyle(color: Colors.white))) // White text
             ]),
 
             // Profile Icon - Green Theme
@@ -104,14 +102,17 @@ class FBottomBar extends StatelessWidget {
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => ProfilePage(userData: userdata)),
-                          (Route<dynamic> route) => false,
+                          builder: (context) =>
+                              ProfilePage(userData: userdata)),
+                      (Route<dynamic> route) => false,
                     );
                     // Profile action goes here
                   },
                 ),
               ),
-              Expanded(child: Text("Profile", style: TextStyle(color: Colors.white))) // White text
+              Expanded(
+                  child: Text("Profile",
+                      style: TextStyle(color: Colors.white))) // White text
             ]),
           ],
         ),
