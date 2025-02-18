@@ -2,10 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:krishi_setu01/screens/Farmer%20Screens/farmerbottomnav.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
-import '../../utils.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+import 'farmerbottomnav.dart';
 
 class Analytics extends StatefulWidget {
   Map<String,dynamic> userdata;

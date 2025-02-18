@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:krishi_setu01/screens/Buyer%20Screens/buyerBottomNavbar.dart';
-import 'package:krishi_setu01/screens/profile_page.dart';
+import 'buyerBottomNavbar.dart';
 
 class ProductListingScreen extends StatefulWidget {
   final Map<String, dynamic> userdata;
 
-  const ProductListingScreen({Key? key, required this.userdata}) : super(key: key);
+  const ProductListingScreen({Key? key, required this.userdata})
+      : super(key: key);
 
   @override
   _ProductListingScreenState createState() => _ProductListingScreenState();
@@ -61,12 +61,12 @@ class _ProductListingScreenState extends State<ProductListingScreen> {
     }
   }
 
-
   void filterSearchResults(String query) {
     setState(() {
       filteredProducts = products
-          .where((product) =>
-          product['product_name'].toLowerCase().contains(query.toLowerCase()))
+          .where((product) => product['product_name']
+              .toLowerCase()
+              .contains(query.toLowerCase()))
           .toList();
     });
   }
@@ -134,15 +134,16 @@ class _ProductListingScreenState extends State<ProductListingScreen> {
                               topRight: Radius.circular(12)),
                           child: product['image'].isNotEmpty
                               ? Image.memory(
-                            base64Decode(product['image']),
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                          )
+                                  base64Decode(product['image']),
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                )
                               : Container(
-                            color: Colors.green[100],
-                            width: double.infinity,
-                            child: const Icon(Icons.image, size: 50, color: Colors.green),
-                          ),
+                                  color: Colors.green[100],
+                                  width: double.infinity,
+                                  child: const Icon(Icons.image,
+                                      size: 50, color: Colors.green),
+                                ),
                         ),
                       ),
                       Padding(
@@ -179,7 +180,7 @@ class _ProductListingScreenState extends State<ProductListingScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height:10)
+                      const SizedBox(height: 10)
                     ],
                   ),
                 );
@@ -192,8 +193,6 @@ class _ProductListingScreenState extends State<ProductListingScreen> {
     );
   }
 }
-
-
 
 // Product Detail Page
 class ProductDetailScreen extends StatelessWidget {
@@ -213,22 +212,30 @@ class ProductDetailScreen extends StatelessWidget {
             product['image'].isNotEmpty
                 ? Image.memory(base64Decode(product['image']), height: 200)
                 : Container(
-              height: 200,
-              color: Colors.green[100],
-              child: const Icon(Icons.image, size: 50, color: Colors.green),
-            ),
+                    height: 200,
+                    color: Colors.green[100],
+                    child:
+                        const Icon(Icons.image, size: 50, color: Colors.green),
+                  ),
             const SizedBox(height: 20),
-            Text("Product: ${product['product_name']}", style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            Text("Price: ${product['price']}", style: const TextStyle(fontSize: 16)),
-            Text("Quantity: ${product['quantity']}", style: const TextStyle(fontSize: 16)),
-            Text("Description: ${product['product_info']}", style: const TextStyle(fontSize: 16)),
+            Text("Product: ${product['product_name']}",
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            Text("Price: ${product['price']}",
+                style: const TextStyle(fontSize: 16)),
+            Text("Quantity: ${product['quantity']}",
+                style: const TextStyle(fontSize: 16)),
+            Text("Description: ${product['product_info']}",
+                style: const TextStyle(fontSize: 16)),
             const Spacer(),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("${product['product_name']} purchased successfully!")),
+                    SnackBar(
+                        content: Text(
+                            "${product['product_name']} purchased successfully!")),
                   );
                 },
                 style: ElevatedButton.styleFrom(
@@ -237,7 +244,8 @@ class ProductDetailScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: const Text("CONFIRM PURCHASE", style: TextStyle(color: Colors.white)),
+                child: const Text("CONFIRM PURCHASE",
+                    style: TextStyle(color: Colors.white)),
               ),
             ),
           ],

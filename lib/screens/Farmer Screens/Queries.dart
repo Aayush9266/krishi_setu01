@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:krishi_setu01/screens/Farmer%20Screens/farmerbottomnav.dart';
 
-import '../../utils.dart';
+import '../../utils/utils.dart';
+import 'farmerbottomnav.dart';
 
 class Queries extends StatefulWidget {
   const Queries({Key? key, required this.userdata}) : super(key: key);

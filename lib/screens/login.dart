@@ -1,13 +1,12 @@
+import 'package:KrishiSetu/screens/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:krishi_setu01/Screens/Buyer%20Screens/product_listing.dart';
-import 'package:krishi_setu01/Screens/signup.dart';
-import 'package:krishi_setu01/screens/Buyer Screens/buyer_home.dart';
-import 'package:krishi_setu01/screens/Farmer Screens/farmerhomepage.dart';
-import 'package:krishi_setu01/Screens/role_selection.dart';
-import 'package:krishi_setu01/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../utils/utils.dart';
+
+
 
 
 class LoginApp extends StatelessWidget {

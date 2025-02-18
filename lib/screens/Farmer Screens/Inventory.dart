@@ -4,11 +4,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:krishi_setu01/models/product.dart';
-import 'package:krishi_setu01/screens/Farmer%20Screens/editproduct.dart';
-import 'package:krishi_setu01/screens/Farmer%20Screens/farmerbottomnav.dart';
+import '../../models/product.dart';
 
-import '../../utils.dart';
+import 'editproduct.dart';
+import 'farmerbottomnav.dart';
 
 class Inventory extends StatefulWidget {
   Map<String, dynamic> userdata;

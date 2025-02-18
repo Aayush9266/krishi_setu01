@@ -2,10 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'Screens/Buyer Screens/product_listing.dart';
-import 'Screens/Farmer Screens/farmerhomepage.dart';
-import 'Screens/login.dart';
-import 'Screens/role_selection.dart';
+import '../Screens/Buyer Screens/product_listing.dart';
+import '../Screens/Farmer Screens/farmerhomepage.dart';
+import '../Screens/login.dart';
+import '../screens/role_selection.dart';
+
 
 class utils{
   Future<void> logoutUser(BuildContext context) async {

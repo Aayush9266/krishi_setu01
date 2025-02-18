@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:krishi_setu01/Screens/login.dart';
-import 'package:krishi_setu01/utils.dart';
+
+
+import '../utils/utils.dart';
+import 'login.dart';
 
 
 class Intermediatepage extends StatefulWidget {

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:krishi_setu01/Screens/Farmer%20Screens/farmerhomepage.dart';
-import 'package:krishi_setu01/screens/Farmer%20Screens/Inventory.dart';
-import 'package:krishi_setu01/screens/Farmer%20Screens/Queries.dart';
-import 'package:krishi_setu01/screens/Farmer%20Screens/analytics.dart';
-import 'package:krishi_setu01/screens/profile_page.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
+
+import '../profile_page.dart';
+import 'Inventory.dart';
+import 'analytics.dart';
+import 'farmerhomepage.dart';
+
 
 class FBottomBar extends StatelessWidget {
   const FBottomBar({Key? key, required this.userdata}) : super(key: key);

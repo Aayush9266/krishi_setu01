@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:krishi_setu01/Screens/Farmer%20Screens/farmerhomepage.dart';
-import 'package:krishi_setu01/screens/Farmer%20Screens/farmerbottomnav.dart';
-import '../utils.dart';
+import '../utils/utils.dart';
 import 'Buyer Screens/buyerBottomNavbar.dart';
 import 'Buyer Screens/product_listing.dart';
+import 'Farmer Screens/farmerbottomnav.dart';
+import 'Farmer Screens/farmerhomepage.dart';
 
 class ProfilePage extends StatefulWidget {
   final Map<String, dynamic> userData;
