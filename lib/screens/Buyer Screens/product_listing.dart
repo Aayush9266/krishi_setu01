@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:KrishiSetu/screens/Buyer Screens/product_detail.dart';
 import 'buyerBottomNavbar.dart';
 
 class ProductListingScreen extends StatefulWidget {
@@ -51,6 +52,7 @@ class _ProductListingScreenState extends State<ProductListingScreen> {
           'price': data['price'],
           'product_info': data['productInfo'],
           'quantity': data['quantity'],
+          'id': doc.id,
         };
       }).toList();
 
@@ -165,7 +167,7 @@ class _ProductListingScreenState extends State<ProductListingScreen> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      ProductDetailScreen(product: product),
+                                      ProductDetailScreen(product: product, userData: widget.userdata,),
                                 ),
                               );
                             },
@@ -175,7 +177,7 @@ class _ProductListingScreenState extends State<ProductListingScreen> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
-                            child: Text("BUY - ${product['price']}",
+                            child: Text("BUY - ₹${product['price']}",
                                 style: const TextStyle(color: Colors.white)),
                           ),
                         ),
@@ -194,63 +196,3 @@ class _ProductListingScreenState extends State<ProductListingScreen> {
   }
 }
 
-// Product Detail Page
-class ProductDetailScreen extends StatelessWidget {
-  final Map<String, dynamic> product;
-
-  const ProductDetailScreen({super.key, required this.product});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(product['product_name'])),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            product['image'].isNotEmpty
-                ? Image.memory(base64Decode(product['image']), height: 200)
-                : Container(
-                    height: 200,
-                    color: Colors.green[100],
-                    child:
-                        const Icon(Icons.image, size: 50, color: Colors.green),
-                  ),
-            const SizedBox(height: 20),
-            Text("Product: ${product['product_name']}",
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            Text("Price: ${product['price']}",
-                style: const TextStyle(fontSize: 16)),
-            Text("Quantity: ${product['quantity']}",
-                style: const TextStyle(fontSize: 16)),
-            Text("Description: ${product['product_info']}",
-                style: const TextStyle(fontSize: 16)),
-            const Spacer(),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                        content: Text(
-                            "${product['product_name']} purchased successfully!")),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: const Text("CONFIRM PURCHASE",
-                    style: TextStyle(color: Colors.white)),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
