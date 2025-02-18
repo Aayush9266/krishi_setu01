@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:krishi_setu01/screens/Buyer%20Screens/buyerBottomNavbar.dart';
 import 'package:krishi_setu01/screens/profile_page.dart';
 
 class ProductListingScreen extends StatefulWidget {
@@ -192,6 +193,7 @@ class _ProductListingScreenState extends State<ProductListingScreen> {
           ),
         ],
       ),
+      bottomNavigationBar: BBottomBar(userdata: widget.userdata),
     );
   }
 }

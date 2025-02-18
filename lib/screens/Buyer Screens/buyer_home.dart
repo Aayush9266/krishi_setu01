@@ -11,17 +11,17 @@ class BuyerHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Get current user
-    final User? user = FirebaseAuth.instance.currentUser;
-    Future<void> logoutUser(BuildContext context) async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.remove('isLoggedIn');
-
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => LoginScreen()),
-            (Route<dynamic> route) => false,
-      );
-    }
+    // final User? user = FirebaseAuth.instance.currentUser;
+    // Future<void> logoutUser(BuildContext context) async {
+    //   SharedPreferences prefs = await SharedPreferences.getInstance();
+    //   await prefs.remove('isLoggedIn');
+    //
+    //   Navigator.pushAndRemoveUntil(
+    //     context,
+    //     MaterialPageRoute(builder: (context) => LoginScreen()),
+    //         (Route<dynamic> route) => false,
+    //   );
+    // }
     return ProductListingScreen(userdata: userdata,);
     //   Scaffold(
     //   appBar: AppBar(
