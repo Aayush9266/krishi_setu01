@@ -3,7 +3,6 @@ import 'package:KrishiSetu/Screens/Buyer%20Screens/buyerBottomNavbar.dart';
 import 'package:KrishiSetu/screens/Buyer%20Screens/product_listing.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class CartPage extends StatefulWidget {
   final Map<String, dynamic> userdata;
@@ -15,7 +14,7 @@ class CartPage extends StatefulWidget {
 
 class _CartPageState extends State<CartPage> {
   List<Map<String, dynamic>> cartItems = [];
-  List<String> cartIds = [];
+  List<Map<String, dynamic>> cartIds = [];
   Map<String, int> selectedQuantities = {};
 
   @override
@@ -24,10 +23,10 @@ class _CartPageState extends State<CartPage> {
     loadCart();
   }
 
-  /// Load Cart Product IDs from SharedPreferences
   Future<void> loadCart() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> storedCart = prefs.getStringList('cart') ?? [];
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    DocumentSnapshot userDoc = await firestore.collection('users').doc(widget.userdata['uid']).get();
+    List<Map<String, dynamic>> storedCart = List<Map<String, dynamic>>.from(userDoc.get('cart') ?? []);
 
     setState(() {
       cartIds = storedCart;
@@ -36,20 +35,19 @@ class _CartPageState extends State<CartPage> {
     fetchCartProducts();
   }
 
-  /// Fetch product details from Firestore
   Future<void> fetchCartProducts() async {
     if (cartIds.isEmpty) return;
 
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     List<Map<String, dynamic>> products = [];
 
-    for (String id in cartIds) {
-      DocumentSnapshot doc = await firestore.collection('products').doc(id).get();
+    for (Map<String, dynamic> id in cartIds) {
+      DocumentSnapshot doc = await firestore.collection('products').doc(id['product_id']).get();
       if (doc.exists) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
         data['id'] = doc.id;
         products.add(data);
-        selectedQuantities[doc.id] = 1; // Default quantity to 1
+        selectedQuantities[doc.id] = id['quantity'];
       }
     }
 
@@ -58,27 +56,36 @@ class _CartPageState extends State<CartPage> {
     });
   }
 
-  /// Remove Product from Cart
-  Future<void> removeFromCart(String productId) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      cartIds.remove(productId);
-      cartItems.removeWhere((product) => product['id'] == productId);
-    });
-    await prefs.setStringList('cart', cartIds);
+  Future<void> updateCartQuantity(String productId, int newQuantity) async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    for (var item in cartIds) {
+      if (item['product_id'] == productId) {
+        item['quantity'] = newQuantity;
+      }
+    }
+    await firestore.collection('users').doc(widget.userdata['uid']).update({'cart': cartIds});
   }
 
-  /// Update Quantity
   void updateQuantity(String productId, int change, int availableQuantity) {
     setState(() {
       int newQuantity = (selectedQuantities[productId] ?? 1) + change;
       if (newQuantity > 0 && newQuantity <= availableQuantity) {
         selectedQuantities[productId] = newQuantity;
+        updateCartQuantity(productId, newQuantity);
       }
     });
   }
 
-  /// Calculate Grand Total
+  Future<void> removeFromCart(String productId) async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    cartIds.removeWhere((item) => item['product_id'] == productId);
+    await firestore.collection('users').doc(widget.userdata['uid']).update({'cart': cartIds});
+
+    setState(() {
+      cartItems.removeWhere((product) => product['id'] == productId);
+    });
+  }
+
   double calculateTotal() {
     double total = 0.0;
     for (var product in cartItems) {
@@ -101,18 +108,14 @@ class _CartPageState extends State<CartPage> {
           onPressed: () {
             Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ProductListingScreen(userdata: widget.userdata,)),
+              MaterialPageRoute(builder: (context) => ProductListingScreen(userdata: widget.userdata)),
                   (Route<dynamic> route) => false,
-            ); // Go back to the previous page
+            );
           },
         ),
       ),
       body: cartItems.isEmpty
-          ? const Center(
-        child: Text("Your cart is empty!", style: TextStyle(fontSize: 18)),
-      )
+          ? const Center(child: Text("Your cart is empty!", style: TextStyle(fontSize: 18)))
           : Column(
         children: [
           Expanded(
@@ -125,16 +128,13 @@ class _CartPageState extends State<CartPage> {
                     margin: const EdgeInsets.symmetric(vertical: 8.0),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
-                      side: isAvailable
-                          ? BorderSide.none
-                          : BorderSide(color: Colors.red, width: 2),
+                      side: isAvailable ? BorderSide.none : const BorderSide(color: Colors.red, width: 2),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          // Product Image
                           ClipRRect(
                             borderRadius: BorderRadius.circular(8),
                             child: Image.memory(
@@ -145,55 +145,23 @@ class _CartPageState extends State<CartPage> {
                             ),
                           ),
                           const SizedBox(width: 10),
-
-                          // Product Name & Price
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  product['productName'],
-                                  style: const TextStyle(
-                                      fontSize: 16, fontWeight: FontWeight.bold),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  "₹${product['price']}",
-                                  style: const TextStyle(
-                                      fontSize: 14, color: Colors.grey),
-                                ),
-                                const SizedBox(height: 8),
-
-                                // Quantity Selector
+                                Text(product['productName'], style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                Text("₹${product['price']}", style: const TextStyle(fontSize: 14, color: Colors.grey)),
                                 if (isAvailable)
                                   Row(
                                     children: [
-                                      IconButton(
-                                        icon: const Icon(Icons.remove_circle_outline),
-                                        onPressed: () => updateQuantity(
-                                            product['id'], -1, product['quantity']),
-                                      ),
-                                      Text(
-                                        "${selectedQuantities[product['id']] ?? 1}",
-                                        style: const TextStyle(fontSize: 16),
-                                      ),
-                                      IconButton(
-                                        icon: const Icon(Icons.add_circle_outline),
-                                        onPressed: () => updateQuantity(
-                                            product['id'], 1, product['quantity']),
-                                      ),
+                                      IconButton(icon: const Icon(Icons.remove_circle_outline), onPressed: () => updateQuantity(product['id'], -1, product['quantity'])),
+                                      Text("${selectedQuantities[product['id']] ?? 1}", style: const TextStyle(fontSize: 16)),
+                                      IconButton(icon: const Icon(Icons.add_circle_outline), onPressed: () => updateQuantity(product['id'], 1, product['quantity'])),
                                     ],
-                                  ),
-                                if (!isAvailable)
-                                  const Text(
-                                    "Product Not Available",
-                                    style: TextStyle(color: Colors.red, fontSize: 14),
                                   ),
                               ],
                             ),
                           ),
-
                           // Bid & Chat Button
                           IconButton(
                             icon: const Icon(Icons.gavel, color: Colors.green),
@@ -201,12 +169,7 @@ class _CartPageState extends State<CartPage> {
                               // Implement bidding or chat functionality
                             },
                           ),
-
-                          // Remove from Cart Button
-                          IconButton(
-                            icon: const Icon(Icons.close, color: Colors.red),
-                            onPressed: () => removeFromCart(product['id']),
-                          ),
+                          IconButton(icon: const Icon(Icons.close, color: Colors.red), onPressed: () => removeFromCart(product['id'])),
                         ],
                       ),
                     ),
@@ -215,7 +178,6 @@ class _CartPageState extends State<CartPage> {
               ),
             ),
           ),
-
           // Billing Section
           Container(
             padding: const EdgeInsets.all(12.0),

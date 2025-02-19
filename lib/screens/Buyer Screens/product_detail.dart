@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'package:KrishiSetu/Screens/Buyer%20Screens/buyerBottomNavbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final Map<String, dynamic> product;
+
   final Map<String, dynamic> userData;
 
   const ProductDetailScreen({super.key, required this.product, required this.userData});
@@ -16,7 +16,7 @@ class ProductDetailScreen extends StatefulWidget {
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   Map<String, dynamic>? ownerData;
-  List<String> cart = [];
+  List<Map<String, dynamic>> cart = [];
   bool isInCart = false;
 
   @override
@@ -26,7 +26,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     loadCart();
   }
 
-  /// Fetch Owner Details from Firebase
   Future<void> fetchOwnerData() async {
     String ownerId = widget.product['owner'];
     DocumentSnapshot ownerSnapshot =
@@ -38,27 +37,37 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     }
   }
 
-  /// Load Cart from SharedPreferences
   Future<void> loadCart() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      cart = prefs.getStringList('cart') ?? [];
-      isInCart = cart.contains(widget.product['id']);
-    });
+    DocumentSnapshot userSnapshot = await FirebaseFirestore.instance.collection('users').doc(widget.userData['uid']).get();
+    if (userSnapshot.exists) {
+      List<dynamic> cartData = userSnapshot.get('cart') ?? [];
+      setState(() {
+        cart = List<Map<String, dynamic>>.from(cartData.map((item) => Map<String, dynamic>.from(item)));
+        isInCart = cart.any((item) => item['product_id'] == widget.product['id']);
+      });
+    }
   }
 
-  /// Toggle Cart (Add or Remove Product)
   Future<void> toggleCart() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    DocumentReference userRef = FirebaseFirestore.instance.collection('users').doc(widget.userData['uid']);
+    DocumentSnapshot userSnapshot = await userRef.get();
+
+    if (!userSnapshot.exists) return;
+
+    List<dynamic> cartData = userSnapshot.get('cart') ?? [];
+    List<Map<String, dynamic>> cartList = List<Map<String, dynamic>>.from(cartData.map((item) => Map<String, dynamic>.from(item)));
+
+    if (isInCart) {
+      cartList.removeWhere((item) => item['product_id'] == widget.product['id']);
+    } else {
+      cartList.add({'product_id': widget.product['id'], 'quantity': 1});
+    }
+
+    await userRef.update({'cart': cartList});
     setState(() {
-      if (isInCart) {
-        cart.remove(widget.product['id']);
-      } else {
-        cart.add(widget.product['id']);
-      }
+      cart = cartList;
       isInCart = !isInCart;
     });
-    await prefs.setStringList('cart', cart);
   }
 
   @override
@@ -67,7 +76,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       backgroundColor: Colors.green[50],
       appBar: AppBar(
         title: Text(widget.product['product_name'],
-            style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
+            style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
         backgroundColor: Colors.green,
       ),
       body: SingleChildScrollView(
@@ -75,7 +84,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Product Image Card
             Card(
               elevation: 4,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -112,19 +120,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 ],
               ),
             ),
-
             const SizedBox(height: 20),
-
-            // Product Description
             const Text("Description",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             const SizedBox(height: 5),
-            Text(widget.product['product_info'],
-                style: const TextStyle(fontSize: 16)),
-
+            Text(widget.product['product_info'], style: const TextStyle(fontSize: 16)),
             const SizedBox(height: 20),
-
-            // Owner Details Card
             if (ownerData != null)
               Card(
                 elevation: 3,
@@ -168,10 +169,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   ),
                 ),
               ),
-
             const SizedBox(height: 20),
-
-            // Add to Cart Button
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -192,7 +190,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             ),
           ],
         ),
-
       ),
       bottomNavigationBar: BBottomBar(userdata: widget.userData),
     );
