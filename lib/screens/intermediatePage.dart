@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:krishi_setu01/Screens/login.dart';
+
+
+import '../utils/utils.dart';
+import 'login.dart';
 
 
 class Intermediatepage extends StatefulWidget {
@@ -16,7 +19,7 @@ class _IntermediatepageState extends State<Intermediatepage> {
 
   Widget build(BuildContext context) {
     if(widget.isLogged){
-      return intermediate(widget.userdata, context);
+      return utils().intermediate(widget.userdata, context);
     }else{
       return LoginScreen();
     }

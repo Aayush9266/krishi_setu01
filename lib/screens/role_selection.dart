@@ -1,15 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:krishi_setu01/Screens/buyer_home.dart';
-import 'package:krishi_setu01/Screens/farmer_home.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'Buyer Screens/product_listing.dart';
+import 'Farmer Screens/farmerhomepage.dart';
+import 'login.dart';
 
 class RoleSelectionScreen extends StatelessWidget {
   Map<String,dynamic> userdata;
   RoleSelectionScreen({required this.userdata ,super.key});
+  Future<void> logoutUser(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('isLoggedIn');
 
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+          (Route<dynamic> route) => false,
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text("Select Your Role"),
         backgroundColor: Colors.green[800],
         centerTitle: true,
@@ -34,7 +47,7 @@ class RoleSelectionScreen extends StatelessWidget {
                 userdata['roles'] = ["Farmer"];
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => FarmerHomeScreen(userdata: userdata,)),
+                  MaterialPageRoute(builder: (context) => FHome(userdata: userdata,)),
                 );
               },
               child: _buildRoleCard(
@@ -51,7 +64,7 @@ class RoleSelectionScreen extends StatelessWidget {
                 userdata['roles'] = ["Buyer"];
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => BuyerHomeScreen(userdata: userdata,)),
+                  MaterialPageRoute(builder: (context) => ProductListingScreen(userdata: userdata,)),
                 );
               },
               child: _buildRoleCard(
@@ -59,6 +72,20 @@ class RoleSelectionScreen extends StatelessWidget {
                 title: "Buyer",
                 description: "Buy fresh produce directly from farmers.",
                 color: Colors.green[500]!,
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+                logoutUser(context);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+              child: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                child: Text("LOGOUT", style: TextStyle(fontSize: 18, color: Colors.white)),
               ),
             ),
           ],

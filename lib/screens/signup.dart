@@ -39,6 +39,7 @@ class _SignupScreenState extends State<SignupScreen> {
           'email': _emailController.text.trim(),
           'address': _addressController.text.trim(),
           'uid': userCredential.user!.uid,
+          'cart':[],
         });
 
         ScaffoldMessenger.of(context).showSnackBar(

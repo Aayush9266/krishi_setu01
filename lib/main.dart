@@ -1,17 +1,32 @@
 import 'dart:developer';
+import 'package:KrishiSetu/screens/intermediatePage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
-import 'package:krishi_setu01/Screens/login.dart';
+
 import 'package:flutter/material.dart';
-import 'package:krishi_setu01/screens/intermediatePage.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 // For persistent login
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  if (kIsWeb) {
+    await Firebase.initializeApp(
+      options: const FirebaseOptions(
+        apiKey: "AIzaSyDwQBA5II5zVGxJ2_zinSDxATWKcFWx0vM",
+        authDomain: "fir-53015.firebaseapp.com",
+        projectId: "fir-53015",
+        storageBucket: "fir-53015.appspot.com",
+        messagingSenderId: "117932881047",
+        appId: "1:117932881047:web:f939072bec539268d7a5d2",
+      ),
+    );
+  } else {
+    await Firebase.initializeApp();
+  }
+
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool? isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
   String? firebaseUid = prefs.getString('firebaseUid');
@@ -28,6 +43,7 @@ void main() async {
 
     userdata = userDoc.data() as Map<String, dynamic>;
   }
+
   runApp(MyApp(userdata: userdata??{} ,isLogged: isLoggedIn,));
 }
 
@@ -40,6 +56,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
+
       title: 'Flutter Demo',
 
       home: Intermediatepage(userdata: userdata ?? {} , isLogged: isLogged),
