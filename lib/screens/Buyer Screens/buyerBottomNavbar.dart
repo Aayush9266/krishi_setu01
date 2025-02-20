@@ -1,4 +1,5 @@
 import 'package:KrishiSetu/Screens/Buyer%20Screens/product_listing.dart';
+import 'package:KrishiSetu/screens/Buyer%20Screens/buyer_chats.dart';
 import 'package:KrishiSetu/screens/Buyer%20Screens/cart_page.dart';
 import 'package:flutter/material.dart';
 import '../profile_page.dart';
@@ -45,7 +46,15 @@ class BBottomBar extends StatelessWidget {
                 child: IconButton(
                   icon: Icon(Icons.chat, color: Colors.white), // White icon
                   padding: EdgeInsets.zero,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              CommunityPage(userdata: userdata)),
+                          (Route<dynamic> route) => false,
+                    );
+                  },
                 ),
               ),
               Expanded(

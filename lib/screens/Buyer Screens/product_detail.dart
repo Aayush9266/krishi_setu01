@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:KrishiSetu/Screens/Buyer%20Screens/buyerBottomNavbar.dart';
+import 'package:KrishiSetu/screens/Buyer%20Screens/chat_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -60,7 +61,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     if (isInCart) {
       cartList.removeWhere((item) => item['product_id'] == widget.product['id']);
     } else {
-      cartList.add({'product_id': widget.product['id'], 'quantity': 1});
+      cartList.add({'product_id': widget.product['id'], "product_name": widget.product['product_name'] ,"price" : widget.product['price'], 'quantity': 1});
     }
 
     await userRef.update({'cart': cartList});
@@ -112,7 +113,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         Text("₹${widget.product['price']}",
                             style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 4),
-                        Text("Available: ${widget.product['quantity']}",
+                        (widget.product['quantity'] > 0) ?Text("Available: ${widget.product['quantity']}") : Text("Out of Stock}",
                             style: TextStyle(fontSize: 16, color: Colors.grey[700])),
                       ],
                     ),
@@ -145,10 +146,17 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                     style: const TextStyle(
                                         fontSize: 18, fontWeight: FontWeight.bold)),
                                 const Spacer(),
-                                IconButton(
+                                 IconButton(
                                   icon: const Icon(Icons.chat, color: Colors.green),
-                                  onPressed: () {
-                                    Navigator.pushNamed(context, '/chat', arguments: ownerData);
+                                  onPressed: () async {
+                                    //roomname = buyer's name + farmer's name
+                                    String roomName = widget.userData['name']+ownerData?['name'];
+                                    await FirebaseFirestore.instance.collection('chats').doc(roomName).set({
+                                      'groupId': roomName,
+                                      'buyer': widget.userData['name'],
+                                      'farmer': ownerData?['name'],
+                                    });
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => ChatScreen(userdata: widget.userData, RoomId: roomName,farmer: ownerData?['name'],)));
                                   },
                                 ),
                               ],

@@ -3,19 +3,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'farmer_chat_screen.dart';
-import 'farmerbottomnav.dart';
+import 'buyerBottomNavbar.dart';
 
-
-class FCommunityPage extends StatefulWidget {
-  FCommunityPage({Key? key, required this.userdata}) : super(key: key);
+class CommunityPage extends StatefulWidget {
+  CommunityPage({Key? key, required this.userdata}) : super(key: key);
   final Map<String, dynamic> userdata;
 
   @override
-  _FCommunityPageState createState() => _FCommunityPageState();
+  _CommunityPageState createState() => _CommunityPageState();
 }
 
-class _FCommunityPageState extends State<FCommunityPage> {
+class _CommunityPageState extends State<CommunityPage> {
   List<Map<String, dynamic>> _communities = [];
   bool _isLoading = true;
 
@@ -29,7 +27,7 @@ class _FCommunityPageState extends State<FCommunityPage> {
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('chats')
-          .where('farmer', isEqualTo: widget.userdata['name']) // Filter by buyer
+          .where('buyer', isEqualTo: widget.userdata['name']) // Filter by buyer
           .get();
 
       List<Map<String, dynamic>> communities = querySnapshot.docs.map((doc) {
@@ -84,32 +82,32 @@ class _FCommunityPageState extends State<FCommunityPage> {
                     elevation: 4,
                     margin: EdgeInsets.only(bottom: 10),
                     child: ListTile(
-                        leading: Icon(Icons.face,
-                            color: Colors.green),
-                        title: Text(
-                          _communities[index]["buyer"]!,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16),
-                        ),
-                        // subtitle: Text(
-                        //   "Admin: ${_communities[index]["admin"]}",
-                        //   style: TextStyle(color: Colors.grey[700]),
-                        // ),
-                        trailing:
-                        Icon(Icons.arrow_forward_ios, size: 16),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => FChatScreen(
-                                userdata: widget.userdata,
-                                RoomId: _communities[index]["groupId"],
-                                buyer:  _communities[index]["buyer"],
+                      leading: Icon(Icons.face,
+                          color: Colors.green),
+                      title: Text(
+                        _communities[index]["farmer"]!,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16),
+                      ),
+                      // subtitle: Text(
+                      //   "Admin: ${_communities[index]["admin"]}",
+                      //   style: TextStyle(color: Colors.grey[700]),
+                      // ),
+                      trailing:
+                      Icon(Icons.arrow_forward_ios, size: 16),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ChatScreen(
+                              userdata: widget.userdata,
+                              RoomId: _communities[index]["groupId"],
+                              farmer:  _communities[index]["farmer"],
 
-                              ),
                             ),
-                          );
+                          ),
+                        );
                         }
                     ),
                   );
@@ -120,7 +118,7 @@ class _FCommunityPageState extends State<FCommunityPage> {
           ),
         ],
       ),
-      bottomNavigationBar: FBottomBar(userdata: widget.userdata),
+      bottomNavigationBar: BBottomBar(userdata: widget.userdata),
     );
   }
 }

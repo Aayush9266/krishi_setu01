@@ -55,7 +55,7 @@ class _ProductGridPageState extends State<ProductGridPage> {
   Future<void> _fetchProducts() async {
     QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection('products')
-        .where('owner', isEqualTo: widget.userdata['name'])
+        .where('owner', isEqualTo: widget.userdata['uid'])
         .get();
 
     setState(() {

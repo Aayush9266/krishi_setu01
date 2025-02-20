@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:KrishiSetu/screens/Buyer%20Screens/my_orders.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -333,6 +334,7 @@ class _ProfilePageState extends State<ProfilePage> {
            if(widget.userData['roles'][0].toString() == "Buyer") ListTile(
               title: TextButton(
                 onPressed: ()  {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => OrdersListPage(userdata: widget.userData)));
                  // await logoutUser(context); // Logout the user
                 },
                 child: Align(

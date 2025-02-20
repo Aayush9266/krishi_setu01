@@ -46,7 +46,7 @@ class _SellerDashboardState extends State<SellerDashboard> {
   Future<void> _fetchSellerData() async {
     QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection('products')
-        .where('owner', isEqualTo: widget.userdata['name'])
+        .where('owner', isEqualTo: widget.userdata['uid'])
         .get();
 
     double revenue = 0;

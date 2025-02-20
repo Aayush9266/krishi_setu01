@@ -82,7 +82,7 @@ class FarmerHomePage extends StatelessWidget {
       {'title': 'APMC Market', 'icon': LucideIcons.store,'widget' : APMC()},
       {'title': 'Weather Report', 'icon': LucideIcons.cloudRain,'widget' : Weather()},
       {'title': 'Inventory', 'icon': LucideIcons.box,'widget' : Inventory(userdata: userdata,)},
-      {'title': 'Queries', 'icon': LucideIcons.messageCircle,'widget' : Queries(userdata: userdata,)},
+      {'title': 'Queries', 'icon': LucideIcons.messageCircle,'widget' : FCommunityPage(userdata: userdata,)},
     ];
 
     return Scaffold(

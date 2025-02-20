@@ -1,3 +1,4 @@
+import 'package:KrishiSetu/screens/Farmer%20Screens/Queries.dart';
 import 'package:flutter/material.dart';
 
 import '../profile_page.dart';
@@ -85,13 +86,13 @@ class FBottomBar extends StatelessWidget {
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Analytics(userdata: userdata)),
+                          builder: (context) => FCommunityPage(userdata: userdata)),
                           (Route<dynamic> route) => false,
                     );
                   },
                 ),
               ),
-              Expanded(child: Text("Dashboard", style: TextStyle(color: Colors.white))) // White text
+              Expanded(child: Text("Chats", style: TextStyle(color: Colors.white))) // White text
             ]),
 
             // Profile Icon - Green Theme
