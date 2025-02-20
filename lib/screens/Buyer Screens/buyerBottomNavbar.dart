@@ -1,4 +1,5 @@
 import 'package:KrishiSetu/Screens/Buyer%20Screens/product_listing.dart';
+import 'package:KrishiSetu/screens/Buyer%20Screens/cart_page.dart';
 import 'package:flutter/material.dart';
 import '../profile_page.dart';
 
@@ -78,12 +79,12 @@ class BBottomBar extends StatelessWidget {
                       color: Colors.white), // White icon
                   padding: EdgeInsets.zero,
                   onPressed: () {
-                    // Navigator.pushAndRemoveUntil(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //       builder: (context) => Analytics(userdata: userdata)),
-                    //       (Route<dynamic> route) => false,
-                    // );
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => CartPage(userdata: userdata)),
+                          (Route<dynamic> route) => false,
+                    );
                   },
                 ),
               ),

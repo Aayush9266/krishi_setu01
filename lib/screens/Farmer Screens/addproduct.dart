@@ -65,7 +65,7 @@ class _AddProductState extends State<AddProduct> {
         _isLoading = true;
       });
 
-      String owner = widget.userdata['name'];
+      String owner = widget.userdata['uid'];
 
 
       Map<String, dynamic> productData = {
